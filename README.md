@@ -105,8 +105,9 @@ To run this application with Docker, you can use the provided `docker-compose.ym
 1.  **Create the log and configuration files:**
 
     ```bash
-    touch aprx-rf.log
-    touch aprx.conf
+    nano config.php to edit configurations
+    ln -s /var/log/aprx/aprx-rf.log .
+    ln -s /etc/aprx.conf .
     ```
 
 2.  **Build and run the containers:**
