@@ -1,125 +1,124 @@
-# APRX Simple Statistics Website Generator
+# 📈 APRX Simple Statistics Website Generator
 
-A simple statistics and information generator for APRX software, which allows to monitor load, frames, stations details, statistics from selected time window and more.
+A lightweight PHP-based statistics and monitoring web application for [APRX](https://github.com/PhirePhly/aprx), a popular APRS digipeater software. It allows operators to view APRX log insights including traffic load, frame statistics, active stations, and more — all within a selected time window.
 
+---
 
-## Installation and usage
+## 🚀 Features
 
-For installation just copy all files to the webistes folder in your WWW server directory. Make sure it supports PHP.
+- Real-time monitoring of AX.25 frames
+- Visual differentiation of traffic (RF, APRS-IS, TX, RX)
+- Interface callsign-based filtering
+- Distance calculation based on station coordinates
+- Custom branding (logo and info box)
+- Language support (English and Polish)
+- Docker-ready deployment
 
-To configure, open config.php file with some text editor.
+---
 
-Enter the full path to your APRX-RF log file (aprx-rf.log, NOT aprx.log):
+## 📂 Installation
 
+1. **Copy files**  
+   Place all files into a PHP-enabled web server directory (e.g., `/var/www/html/aprxstat`).
+
+2. **Edit Configuration**  
+   Open `config.php` in a text editor and set:
+
+   ```php
+   $logpath = "/var/log/aprx/aprx-rf.log"; // Full path to aprx-rf.log
+   $stationlat = 3.139;                    // Your latitude (decimal degrees)
+   $stationlon = 101.6869;                 // Your longitude (decimal degrees)
+   $cntalias = "9M2";                      // Regional digipeater alias (e.g. SP, HU, etc.)
+
+   $static_if = 1;                         // Enable static interface
+   $static_call = "9M2PJU-10";             // Your static callsign
+   $static_lang = "en";                    // Language: 'en' or 'pl'
+   ```
+
+3. **Optional Customizations**
+
+   - **Custom logo**  
+     ```php
+     $logourl = "aprslogo.png"; // Relative or external image URL
+     ```
+
+   - **Custom Info Text**  
+     Create a file named `custom.php` — can include HTML or PHP.
+
+4. **AX.25 Real-Time Monitor Settings** (inside `config.php`)
+
+   ```php
+   $refresh = 2000; // Refresh rate in milliseconds
+   $startrows = 5;  // Number of rows on session start
+
+   // Color configuration
+   $timestampcolor = "silver";
+   $APRSIScolor    = "orange";
+   $RFcolor        = "blue";
+   $TXcolor        = "red";
+   $RXcolor        = "green";
+   $pathcolor      = "purple";
+   ```
+
+---
+
+## 🐳 Docker Deployment
+
+### 🔧 Prerequisites
+
+- Docker
+- Docker Compose
+
+### 🛠️ Setup & Run
+
+1. **Prepare your log and config files**
+
+   ```bash
+   nano config.php
+   ln -s /var/log/aprx/aprx-rf.log .
+   ln -s /etc/aprx.conf .
+   ```
+
+2. **Start the container**
+
+   ```bash
+   docker compose up -d
+   ```
+
+3. **Visit the app**
+
+   Open your browser to:  
+   [http://localhost:8080](http://localhost:8080)
+
+---
+
+## 🔄 Linking Native APRX Files
+
+The `docker-compose.yml` mounts your native `aprx-rf.log` and `aprx.conf` from the current directory. Ensure these files (or symlinks) exist:
+
+```bash
+ln -s /var/log/aprx/aprx-rf.log .
+ln -s /etc/aprx.conf .
 ```
-$logpath = "/some/path/aprx-rf.log";
-```
-Usually you can find it under /var/log/aprx/aprx-rf.log. Incorrect path will make the script unable to work.
 
+---
 
-This was the only required step and now the software should work.
+## ⚠️ Stability Notice
 
-It's recommended to set also another settings:
+> **BETA SOFTWARE**  
+> This application is under active development and may contain bugs or inefficiencies. Please report issues or improvements via GitHub.
 
-Your station latitude and longtitude for distance calculation (in decimal degrees):
-```
-$stationlat = 49.013855;
-$stationlon = 28.762225;
-```
+---
 
-And your regional country/state untraced (flood) digipeater alias, which helps the software to distinguish between direct and digipeated frames.
-For example it's SP in Poland, CZ in Czech Republic or HU in Hungary.
-```
-$cntalias = "SP";
-```
+## 👥 Authors
 
-Normally every time you open the statistics website, you have to enter interface callsign. If you want to set static interface callsign (but it can be temporarily changed via website for one session), you can do this here:
-```
-$static_if = 1;
-$static_call = "N0CALL-11;
-$static_lang = "en";
-```
-Set $static_if to 1 to enable. Available languages are en for English and pl for Polish.
+- **Peter SQ8VPS**
+- **Alfredo IZ7BOJ**
 
+---
 
-Custom logo and text info can be set optionally. The logo will be displayed on all pages and text info will be displayed only on main (summary.php) page.
-To set the logo you have to provide the URL/address of the image:
-```
-$logourl="aprslogo.png";
-```
-That can be a link to an external or local file. The image will be automatically resized to fit the page.
+## 📜 License
 
-To set your custom text info place that info in a file named **custom.php**. It can contain HTML and PHP code.
+Free for non-commercial use. You may modify and redistribute the software, but attribution to the original authors is required.
 
-## AX.25 realtime monitor configuration
-
-You can watch the AX.25 traffic in realtime using this software. The default configuration should be sufficient in most cases.
-
-You can set monitor's refresh rate (in ms unit):
-```
-$refresh=2000;
-```
-
-You can change colors:
-```
-$timestampcolor="silver";
-$APRSIScolor="orange";
-$RFcolor="blue";
-$TXcolor="red";
-$RXcolor="green";
-$pathcolor="purple";
-```
-
-Here you set the number of rows displayed at session opening:
-```
-$startrows=5;
-```
-
-
-
-## Software stability
-
-This is a BETA software. It can contain some bugs and may be written in non-efficient way. Please contact authors if you find any bug.
-
-## Authors
-
-* **Peter SQ8VPS**
-* **Alfredo IZ7BOJ**
-
-
-## License
-
-Project is free for non-commercial use. You can modify and publish this software, but you have to put an information about original authors.
-
-## Docker
-
-To run this application with Docker, you can use the provided `docker-compose.yml` file.
-
-### Prerequisites
-
-* Docker
-* Docker Compose
-
-### Running the application
-
-1.  **Create the log and configuration files:**
-
-    ```bash
-    nano config.php to edit configurations
-    ln -s /var/log/aprx/aprx-rf.log .
-    ln -s /etc/aprx.conf .
-    ```
-
-2.  **Build and run the containers:**
-
-    ```bash
-    docker compose up -d
-    ```
-
-3.  **Access the application:**
-
-    Open your web browser and navigate to `http://localhost:8080`.
-
-### Linking your native aprx-rf.log and aprx.conf
-
-To use your own `aprx-rf.log` and `aprx.conf` files, you can replace the placeholder files created in the first step with your own. The `docker-compose.yml` file is configured to mount these files from the root of the project directory into the application container.
+---
