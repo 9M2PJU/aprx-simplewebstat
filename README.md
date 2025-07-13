@@ -90,3 +90,35 @@ This is a BETA software. It can contain some bugs and may be written in non-effi
 ## License
 
 Project is free for non-commercial use. You can modify and publish this software, but you have to put an information about original authors.
+
+## Docker
+
+To run this application with Docker, you can use the provided `docker-compose.yml` file.
+
+### Prerequisites
+
+* Docker
+* Docker Compose
+
+### Running the application
+
+1.  **Create the log and configuration files:**
+
+    ```bash
+    touch aprx-rf.log
+    touch aprx.conf
+    ```
+
+2.  **Build and run the containers:**
+
+    ```bash
+    docker compose up -d
+    ```
+
+3.  **Access the application:**
+
+    Open your web browser and navigate to `http://localhost:8080`.
+
+### Linking your native aprx-rf.log and aprx.conf
+
+To use your own `aprx-rf.log` and `aprx.conf` files, you can replace the placeholder files created in the first step with your own. The `docker-compose.yml` file is configured to mount these files from the root of the project directory into the application container.
